@@ -1,7 +1,11 @@
-from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+load_dotenv()
+import os
+from langchain_groq import ChatGroq
 from langgraph.graph import MessagesState
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
+
 
 # Tool
 def multiply(a: int, b: int) -> int:
@@ -14,7 +18,10 @@ def multiply(a: int, b: int) -> int:
     return a * b
 
 # LLM with bound tool
-llm = ChatOpenAI(model="gpt-4o")
+llm = ChatGroq(
+    temperature=0.7,
+    model_name="llama3-70b-8192",
+)
 llm_with_tools = llm.bind_tools([multiply])
 
 # Node
